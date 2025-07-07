@@ -1,0 +1,48 @@
+
+<h2>Gestión de Ingredientes</h2>
+<form [formGroup]="formIngrediente" (ngSubmit)="guardar()" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+  <input type="text" placeholder="Nombre" formControlName="nombre" required style="flex: 1;" />
+  <input type="number" placeholder="Precio" formControlName="precio" required style="width: 100px;" />
+  <input type="text" placeholder="Unidad" formControlName="unidad" required style="width: 100px;" />
+
+  <div style="display: flex; align-items: center; gap: 4px;">
+    <input type="number" placeholder="Peso" formControlName="peso" style="width: 100px;" />
+    <select formControlName="unidadPeso" style="width: 100px;">
+      <option value="kg">kg</option>
+      <option value="mg">mg</option>
+      <option value="lb">lb</option>
+      <option value="oz">oz</option>
+    </select>
+  </div>
+
+  <button type="submit">{{ editando ? 'Actualizar' : 'Agregar' }}</button>
+  <button type="button" *ngIf="editandoId" (click)="cancelarEdicion()">Cancelar</button>
+</form>
+
+<div *ngIf="pesoKg !== null" style="margin-top: 8px;">
+  <strong>Peso convertido a kilogramos:</strong> {{ pesoKg | number: '1.3-3' }} kg
+</div>
+
+<table style="margin-top: 16px; border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr>
+      <th style="border-bottom: 1px solid #ccc;">Nombre</th>
+      <th style="border-bottom: 1px solid #ccc;">Precio</th>
+      <th style="border-bottom: 1px solid #ccc;">Unidad</th>
+      <th style="border-bottom: 1px solid #ccc;">Peso (kg)</th>
+      <th style="border-bottom: 1px solid #ccc;">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let ing of ingredientes">
+      <td>{{ ing.nombre }}</td>
+      <td>{{ ing.precio }}</td>
+      <td>{{ ing.unidad }}</td>
+      <td>{{ ing.pesoKg | number: '1.3-3' }}</td>
+      <td>
+        <button (click)="editar(ing)">Editar</button>
+        <button (click)="eliminar(ing.id)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
